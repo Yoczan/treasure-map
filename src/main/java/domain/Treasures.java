@@ -1,5 +1,7 @@
 package domain;
 
+import java.util.Objects;
+
 public class Treasures extends Content {
 
     private final int size;
@@ -15,5 +17,18 @@ public class Treasures extends Content {
     @Override
     protected boolean isOccupied() {
         return false;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Treasures treasures = (Treasures) o;
+        return size == treasures.size;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(size);
     }
 }
