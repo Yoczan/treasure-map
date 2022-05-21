@@ -1,10 +1,8 @@
 package domain;
 
-import java.util.StringJoiner;
-
 public record Position(int x, int y) {
 
-    public Position move(Orientation orientation) {
+    public Position getNextPosition(Orientation orientation) {
         switch (orientation) {
             case E -> {
                 return new Position(x + 1, y);
@@ -25,10 +23,7 @@ public record Position(int x, int y) {
 
     @Override
     public String toString() {
-        return new StringJoiner(", ", Position.class.getSimpleName() + "[", "]")
-                .add("x=" + x)
-                .add("y=" + y)
-                .toString();
+        return "x = " + x + ", y = " + y;
     }
 
     public int getX() {

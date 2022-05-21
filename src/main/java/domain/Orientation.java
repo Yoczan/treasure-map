@@ -3,7 +3,7 @@ package domain;
 public enum Orientation {
     E, S, N, O;
 
-    public Orientation move(Movement movement) {
+    public Orientation getNextOrientation(Movement movement) {
         switch (movement) {
             case A -> {
                 return this;

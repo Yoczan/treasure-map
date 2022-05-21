@@ -12,10 +12,10 @@ import java.util.List;
 
 public class App {
     public static void main(String[] args) {
-        Map map = MapFactory.createMap(6, 5);
-        map.populate(new Treasures(1, new Position(3, 2)));
-        map.populate(new Treasures(3, new Position(1, 3)));
-        map.populate(new Mountain(new Position(5, 3)));
+        Map map = new Map(6, 5);
+        map.populate(new Position(3, 2), new Treasures(1));
+        map.populate(new Position(1, 3), new Treasures(3));
+        map.populate(new Position(5, 3), new Mountain());
 
         List<Movement> movementsYohan = List.of(Movement.A, Movement.A, Movement.D, Movement.A, Movement.D, Movement.A, Movement.G, Movement.A);
         Position position11 = new Position(1, 1);
@@ -31,7 +31,7 @@ public class App {
 
     private static AdventurerMoving createAdventurer(Map map, Orientation orientation, Position position, String name, List<Movement> movements) {
         Adventurer adventurer = new Adventurer(orientation, position, map, name);
-        map.populate(adventurer);
+        map.populate(adventurer.getCurrentPosition(), adventurer);
         return new AdventurerMoving(adventurer, movements);
     }
 }

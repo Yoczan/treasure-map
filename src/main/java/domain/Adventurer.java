@@ -1,53 +1,35 @@
 package domain;
 
-import java.util.StringJoiner;
-
-public class Adventurer extends Content implements Movable {
+public class Adventurer extends Content {
     private final Map map;
     private final String name;
     private Orientation orientation;
     private int treasureCount = 0;
     private boolean isWaitingToMove;
+    private Position currentPosition;
 
-    public Adventurer(Orientation orientation, Position position, Map map, String name) {
-        super(position);
+    public Adventurer(Orientation orientation, Position initialPosition, Map map, String name) {
         this.map = map;
         this.orientation = orientation;
         this.name = name;
+        this.currentPosition = initialPosition;
     }
 
     public void move(Movement movement) throws InterruptedException {
         if (movement == Movement.A) {
-            position = map.move(this);
+            currentPosition = map.handleMovement(this);
         } else {
-            System.out.println(this + " movement : " + movement);
-            orientation = orientation.move(movement);
+            System.out.println(name + " : I turn " + (movement == Movement.D ? "right" : "left"));
+            orientation = orientation.getNextOrientation(movement);
         }
     }
 
-    public void pickUpTreasures(Treasures treasures) throws InterruptedException {
-        treasureCount += treasures.getSize();
-        Thread.sleep(1_000);
+    public Position getNextPosition() {
+        return currentPosition.getNextPosition(orientation);
     }
 
-    @Override
-    protected String getType() {
-        return "Adventurer";
-    }
-
-    @Override
-    public String toString() {
-        return new StringJoiner(", ", Adventurer.class.getSimpleName() + "[", "]")
-                .add("map=" + map)
-                .add("name='" + name + "'")
-                .add("orientation=" + orientation)
-                .add("treasureCount=" + treasureCount)
-                .add("position=" + position)
-                .toString();
-    }
-
-    public Orientation getOrientation() {
-        return orientation;
+    public Position getCurrentPosition() {
+        return currentPosition;
     }
 
     public boolean isWaitingToMove() {
@@ -56,5 +38,20 @@ public class Adventurer extends Content implements Movable {
 
     public void waitToMove() {
         isWaitingToMove = true;
+    }
+
+    public void pickUpTreasures(Treasures treasures) throws InterruptedException {
+        treasureCount += treasures.getSize();
+        Thread.sleep(1_000);
+    }
+
+    @Override
+    protected boolean isOccupied() {
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "I'm " + name + ", I own " + treasureCount + " treasures. I'm currently located at " + currentPosition + " and oriented to " + orientation;
     }
 }

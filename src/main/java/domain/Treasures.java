@@ -4,8 +4,7 @@ public class Treasures extends Content {
 
     private final int size;
 
-    public Treasures(int size, Position position) {
-        super(position);
+    public Treasures(int size) {
         this.size = size;
     }
 
@@ -14,7 +13,7 @@ public class Treasures extends Content {
     }
 
     @Override
-    protected String getType() {
-        return "treasures";
+    protected boolean isOccupied() {
+        return false;
     }
 }

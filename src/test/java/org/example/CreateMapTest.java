@@ -12,10 +12,10 @@ public class CreateMapTest {
     @Test
     public void mapShouldContainsExpectedCells() {
         Map map = new Map(6, 5);
-        Treasures treasures = new Treasures(1, new Position(4, 2));
-        map.populate(treasures);
-        Mountain mountain = new Mountain(new Position(5, 3));
-        map.populate(mountain);
+        Treasures treasures = new Treasures(1);
+        map.populate(new Position(4, 2), treasures);
+        Mountain mountain = new Mountain();
+        map.populate(new Position(5, 3), mountain);
         Assert.assertEquals(treasures, map.getCell(new Position(4, 2)).getContent());
         Assert.assertEquals(mountain, map.getCell(new Position(5, 3)).getContent());
     }

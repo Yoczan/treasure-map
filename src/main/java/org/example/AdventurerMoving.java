@@ -5,15 +5,7 @@ import domain.Movement;
 
 import java.util.List;
 
-public class AdventurerMoving implements Runnable {
-
-    private final Adventurer adventurer;
-    private final List<Movement> movements;
-
-    public AdventurerMoving(Adventurer adventurer, List<Movement> movements) {
-        this.adventurer = adventurer;
-        this.movements = movements;
-    }
+public record AdventurerMoving(Adventurer adventurer, List<Movement> movements) implements Runnable {
 
     @Override
     public void run() {
