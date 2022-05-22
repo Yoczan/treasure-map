@@ -7,6 +7,7 @@ import domain.Movement;
 import domain.Orientation;
 import domain.Position;
 import domain.Treasures;
+import exceptions.OutOfMapException;
 import org.junit.Test;
 
 import java.util.List;
@@ -14,7 +15,7 @@ import java.util.List;
 public class MoveAdventurerTest {
 
     @Test
-    public void positionShouldBeS23WhenMovementIsAADADAGA() throws InterruptedException {
+    public void positionShouldBeS23WhenMovementIsAADADAGA() throws InterruptedException, OutOfMapException {
         Map map = new Map(6, 5);
         Adventurer adventurer = new Adventurer(Orientation.E, new Position(1, 1), map, "Yohan");
         map.populate(adventurer.getCurrentPosition(), adventurer);
@@ -31,7 +32,7 @@ public class MoveAdventurerTest {
     }
 
     @Test
-    public void postionShouldBeS23WhenMovementIsAADADAGA() throws InterruptedException {
+    public void postionShouldBeS23WhenMovementIsAADADAGA() throws InterruptedException, OutOfMapException {
         Map map = new Map(6, 5);
         Adventurer adventurer = new Adventurer(Orientation.E, new Position(1, 1), map, "Yohan");
         map.populate(adventurer.getCurrentPosition(), adventurer);
@@ -42,7 +43,7 @@ public class MoveAdventurerTest {
     }
 
     @Test
-    public void mountains() throws InterruptedException {
+    public void mountains() throws InterruptedException, OutOfMapException {
         Map map = new Map(6, 5);
         Adventurer adventurer = new Adventurer(Orientation.E, new Position(1, 1), map, "Yohan");
         map.populate(adventurer.getCurrentPosition(), adventurer);

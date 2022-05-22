@@ -8,12 +8,13 @@ import domain.Movement;
 import domain.Orientation;
 import domain.Position;
 import domain.Treasures;
+import exceptions.OutOfMapException;
 
 import java.util.Random;
 import java.util.Scanner;
 
 public class AppWithTerminalInterface {
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) throws InterruptedException, OutOfMapException {
 
         boolean shouldExit = false;
 
@@ -31,7 +32,7 @@ public class AppWithTerminalInterface {
         }
     }
 
-    private static void play(Scanner clavier) throws InterruptedException {
+    private static void play(Scanner clavier) throws InterruptedException, OutOfMapException {
         Map map = createMap(clavier);
         Adventurer adventurer = createAdventurer(clavier, map);
 
@@ -53,7 +54,7 @@ public class AppWithTerminalInterface {
         }
     }
 
-    private static Adventurer createAdventurer(Scanner clavier, Map map) {
+    private static Adventurer createAdventurer(Scanner clavier, Map map) throws OutOfMapException {
         System.out.println("Renseigner le nom de votre aventurier : ");
         Position position = new Position(1, 1);
         Adventurer adventurer = new Adventurer(Orientation.E, position, map, clavier.next());
@@ -62,7 +63,7 @@ public class AppWithTerminalInterface {
         return adventurer;
     }
 
-    private static Map createMap(Scanner clavier) {
+    private static Map createMap(Scanner clavier) throws OutOfMapException {
         System.out.println("=== Créer une carte ===");
         int width = askInt(clavier, "Largeur de la carte ?");
         int height = askInt(clavier, "Hauteur de la carte ?");
@@ -78,7 +79,7 @@ public class AppWithTerminalInterface {
         return scanner.nextInt();
     }
 
-    private static void populateMap(Map map, Content content) {
+    private static void populateMap(Map map, Content content) throws OutOfMapException {
         int x = new Random().nextInt(2, map.getWidth());
         int y = new Random().nextInt(2, map.getHeight());
         map.populate(new Position(x, y), content);

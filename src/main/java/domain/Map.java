@@ -1,5 +1,7 @@
 package domain;
 
+import exceptions.OutOfMapException;
+
 public class Map {
 
     private final Cell[][] cells;
@@ -16,47 +18,52 @@ public class Map {
 
     public synchronized Position handleMovement(Adventurer adventurer) throws InterruptedException {
         Position nextExpectedPosition = adventurer.getNextPosition();
-        Cell nextExpectedCell = getCell(nextExpectedPosition);
-        Content contentOfNextExpectedCell = nextExpectedCell.getContent();
 
-        System.out.println(adventurer.getName() + " se dirige vers la case " + nextExpectedPosition);
+        try {
+            Cell nextExpectedCell = getCell(nextExpectedPosition);
+            Content contentOfNextExpectedCell = nextExpectedCell.getContent();
 
-        if (contentOfNextExpectedCell instanceof Treasures treasures) {
-            adventurer.pickUpTreasures(treasures);
-            Thread.sleep(1_000);
-            moveToNextCell(adventurer);
-            System.out.println(adventurer.getName() + " a trouvé " + treasures.getSize() + " trésors");
-            notifyAll();
-            return nextExpectedPosition;
-        } else if (contentOfNextExpectedCell instanceof Plain) {
-            Thread.sleep(1_000);
-            moveToNextCell(adventurer);
-            notifyAll();
-            return nextExpectedPosition;
-        } else if (contentOfNextExpectedCell instanceof Adventurer && contentOfNextExpectedCell != adventurer) {
-            if (!((Adventurer) contentOfNextExpectedCell).isWaitingToMove()) {
-                waitForNextCellToBeReleased(adventurer);
+            System.out.println(adventurer.getName() + " se dirige vers la case " + nextExpectedPosition);
+
+            if (contentOfNextExpectedCell instanceof Treasures treasures) {
+                adventurer.pickUpTreasures(treasures);
+                Thread.sleep(1_000);
                 moveToNextCell(adventurer);
+                System.out.println(adventurer.getName() + " a trouvé " + treasures.getSize() + " trésors");
+                notifyAll();
                 return nextExpectedPosition;
+            } else if (contentOfNextExpectedCell instanceof Plain) {
+                Thread.sleep(1_000);
+                moveToNextCell(adventurer);
+                notifyAll();
+                return nextExpectedPosition;
+            } else if (contentOfNextExpectedCell instanceof Adventurer && contentOfNextExpectedCell != adventurer) {
+                if (!((Adventurer) contentOfNextExpectedCell).isWaitingToMove()) {
+                    waitForNextCellToBeReleased(adventurer);
+                    moveToNextCell(adventurer);
+                    return nextExpectedPosition;
+                }
+                System.out.println(adventurer.getName() + " rencontre un autre aventurier");
             }
-            System.out.println(adventurer.getName() + " rencontre un autre aventurier");
+        } catch (OutOfMapException ignored) {
+
         }
 
         System.out.println("Le mouvement de " + adventurer.getName() + " a été ignoré");
         return adventurer.getCurrentPosition();
     }
 
-    private void moveToNextCell(Adventurer adventurer) {
+    private void moveToNextCell(Adventurer adventurer) throws OutOfMapException {
         populate(adventurer.getCurrentPosition(), new Plain());
         populate(adventurer.getNextPosition(), adventurer);
         System.out.println(adventurer.getName() + " est maintenant sur la case " + adventurer.getNextPosition());
     }
 
-    public void populate(Position position, Content content) {
+    public void populate(Position position, Content content) throws OutOfMapException {
         getCell(position).updateContent(content);
     }
 
-    private void waitForNextCellToBeReleased(Adventurer adventurer) throws InterruptedException {
+    private void waitForNextCellToBeReleased(Adventurer adventurer) throws InterruptedException, OutOfMapException {
         Cell nextExpectedCell = getCell(adventurer.getNextPosition());
         while (nextExpectedCell.isOccupied()) {
             System.out.println(adventurer.getName() + " attend que la case " + nextExpectedCell.getPosition() + " soit libre");
@@ -65,8 +72,15 @@ public class Map {
         }
     }
 
-    public Cell getCell(Position position) {
-        return cells[position.getX() - 1][position.getY() - 1];
+    public Cell getCell(Position position) throws OutOfMapException {
+        int x = position.getX();
+        int y = position.getY();
+        if (x > getWidth() || x < 1 || y < 0 || y > getHeight()) {
+            System.out.println("La case " + x + ", " + y + " est inaccessible");
+            throw new OutOfMapException();
+        }
+
+        return cells[x - 1][position.getY() - 1];
     }
 
     public int getWidth() {

@@ -8,6 +8,7 @@ import domain.Movement;
 import domain.Orientation;
 import domain.Position;
 import domain.Treasures;
+import exceptions.OutOfMapException;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -20,7 +21,7 @@ import java.util.stream.Collectors;
 
 public class AppWithFiles {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, OutOfMapException {
         System.out.println(System.getProperty("user.dir"));
         List<String> mapSpecifications = Files.readAllLines(Paths.get("src/main/resources/map.txt"));
         List<String> adventurers = Files.readAllLines(Paths.get("src/main/resources/adventurers.txt"));
