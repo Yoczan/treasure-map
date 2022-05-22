@@ -51,6 +51,11 @@ public class Adventurer extends Content {
     }
 
     @Override
+    public char getType() {
+        return 'X';
+    }
+
+    @Override
     public String toString() {
         return "I'm " + name + ", I own " + treasureCount + " treasures. I'm currently located at " + currentPosition + " and oriented to " + orientation;
     }

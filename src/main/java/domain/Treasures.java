@@ -20,6 +20,11 @@ public class Treasures extends Content {
     }
 
     @Override
+    public char getType() {
+        return 'T';
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;

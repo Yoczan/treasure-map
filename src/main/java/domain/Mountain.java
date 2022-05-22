@@ -6,4 +6,9 @@ public class Mountain extends Content {
     protected boolean isOccupied() {
         return true;
     }
+
+    @Override
+    public char getType() {
+        return 'M';
+    }
 }

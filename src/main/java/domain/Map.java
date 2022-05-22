@@ -64,4 +64,22 @@ public class Map {
     public Cell getCell(Position position) {
         return cells[position.getX() - 1][position.getY() - 1];
     }
+
+    @Override
+    public String toString() {
+        StringBuilder map = new StringBuilder();
+
+        for (int column = 0; column <= cells.length; column++) {
+            map.append("|").append(column);
+        }
+        map.append("|").append("\n");
+        for (int r = 0; r < cells[0].length; r++) {
+            map.append("|").append(r + 1);
+            for (Cell[] cell : cells) {
+                map.append("|").append(cell[r].getContent().getType());
+            }
+            map.append("|").append("\n");
+        }
+        return map.toString();
+    }
 }

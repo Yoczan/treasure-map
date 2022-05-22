@@ -6,4 +6,9 @@ public class Plain extends Content {
     protected boolean isOccupied() {
         return false;
     }
+
+    @Override
+    public char getType() {
+        return ' ';
+    }
 }
