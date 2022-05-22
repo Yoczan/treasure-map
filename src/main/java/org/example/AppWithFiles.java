@@ -18,7 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class ShouldHave {
+public class AppWithFiles {
 
     public static void main(String[] args) throws IOException {
         System.out.println(System.getProperty("user.dir"));

@@ -9,11 +9,10 @@ import domain.Orientation;
 import domain.Position;
 import domain.Treasures;
 
-import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
-public class App {
+public class AppWithTerminalInterface {
     public static void main(String[] args) throws InterruptedException {
 
         boolean shouldExit = false;
