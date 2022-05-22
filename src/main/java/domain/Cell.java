@@ -20,6 +20,10 @@ public class Cell {
         return content.isOccupied();
     }
 
+    public Position getPosition() {
+        return position;
+    }
+
     public void updateContent(Content content) {
         this.content = content;
     }

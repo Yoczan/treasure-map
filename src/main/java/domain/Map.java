@@ -19,12 +19,13 @@ public class Map {
         Cell nextExpectedCell = getCell(nextExpectedPosition);
         Content contentOfNextExpectedCell = nextExpectedCell.getContent();
 
-        System.out.println("Cell : " + nextExpectedCell + " Adventurer :" + adventurer);
+        System.out.println(adventurer.getName() + " se dirige vers la case " + nextExpectedPosition);
 
         if (contentOfNextExpectedCell instanceof Treasures treasures) {
             adventurer.pickUpTreasures(treasures);
             Thread.sleep(1_000);
             moveToNextCell(adventurer);
+            System.out.println(adventurer.getName() + " a trouvé " + treasures.getSize() + " trésors");
             notifyAll();
             return nextExpectedPosition;
         } else if (contentOfNextExpectedCell instanceof Plain) {
@@ -38,14 +39,17 @@ public class Map {
                 moveToNextCell(adventurer);
                 return nextExpectedPosition;
             }
+            System.out.println(adventurer.getName() + " rencontre un autre aventurier");
         }
 
+        System.out.println("Le mouvement de " + adventurer.getName() + " a été ignoré");
         return adventurer.getCurrentPosition();
     }
 
     private void moveToNextCell(Adventurer adventurer) {
         populate(adventurer.getCurrentPosition(), new Plain());
         populate(adventurer.getNextPosition(), adventurer);
+        System.out.println(adventurer.getName() + " est maintenant sur la case " + adventurer.getNextPosition());
     }
 
     public void populate(Position position, Content content) {
@@ -55,7 +59,7 @@ public class Map {
     private void waitForNextCellToBeReleased(Adventurer adventurer) throws InterruptedException {
         Cell nextExpectedCell = getCell(adventurer.getNextPosition());
         while (nextExpectedCell.isOccupied()) {
-            System.out.println("wait for " + nextExpectedCell.getContent() + " to move");
+            System.out.println(adventurer.getName() + " attend que la case " + nextExpectedCell.getPosition() + " soit libre");
             adventurer.waitToMove();
             wait();
         }
@@ -63,6 +67,14 @@ public class Map {
 
     public Cell getCell(Position position) {
         return cells[position.getX() - 1][position.getY() - 1];
+    }
+
+    public int getWidth() {
+        return cells.length;
+    }
+
+    public int getHeight() {
+        return cells[0].length;
     }
 
     @Override

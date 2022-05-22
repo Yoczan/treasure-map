@@ -19,7 +19,7 @@ public class Adventurer extends Content {
         if (movement == Movement.A) {
             currentPosition = map.handleMovement(this);
         } else {
-            System.out.println(name + " : I turn " + (movement == Movement.D ? "right" : "left"));
+            System.out.println(name + " : Je tourne à " + (movement == Movement.D ? "droite" : "gauche"));
             orientation = orientation.getNextOrientation(movement);
         }
     }
@@ -57,6 +57,10 @@ public class Adventurer extends Content {
 
     @Override
     public String toString() {
-        return "I'm " + name + ", I own " + treasureCount + " treasures. I'm currently located at " + currentPosition + " and oriented to " + orientation;
+        return "Je suis " + name + ", j'ai ramassé " + treasureCount + " trésors. Je suis actuellement dans la case " + currentPosition + " et je me dirige vers le " + orientation;
+    }
+
+    public String getName() {
+        return name;
     }
 }
