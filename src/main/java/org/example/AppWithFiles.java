@@ -22,7 +22,6 @@ import java.util.stream.Collectors;
 public class AppWithFiles {
 
     public static void main(String[] args) throws IOException, OutOfMapException {
-        System.out.println(System.getProperty("user.dir"));
         List<String> mapSpecifications = Files.readAllLines(Paths.get("src/main/resources/map.txt"));
         List<String> adventurers = Files.readAllLines(Paths.get("src/main/resources/adventurers.txt"));
 

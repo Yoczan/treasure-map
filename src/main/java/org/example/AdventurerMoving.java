@@ -12,7 +12,6 @@ public record AdventurerMoving(Adventurer adventurer, List<Movement> movements) 
         for (Movement movement : movements) {
             try {
                 adventurer.move(movement);
-                System.out.println(adventurer);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
